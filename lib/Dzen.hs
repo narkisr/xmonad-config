@@ -34,6 +34,8 @@ module Dzen (
     -- * Example Dzens
     , defaultDzen
     , nothingDzen
+    , myRightBar
+    , myLeftBar
     ) where
 
 import Data.List (intercalate)
@@ -235,4 +237,25 @@ nothingDzen = DzenConf
     , bg_color   = Nothing
     , exec       = []
     , addargs    = []
+    }
+
+-- 
+-- StatusBars
+-- 
+myLeftBar :: DzenConf
+myLeftBar = defaultDzen
+    -- use the default as a base and override width and
+    -- colors
+    { width       = Just $ Percent 60
+    , fg_color    = Just "#909090"
+    , bg_color    = Just "#303030"
+    }
+
+myRightBar :: DzenConf
+myRightBar = myLeftBar
+    -- use the left one as a base and override just the
+    -- x position and width
+    { x_position = Just $ Percent 60
+    , width      = Just $ Percent 40
+    , alignment  = Just RightAlign
     }

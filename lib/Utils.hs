@@ -56,7 +56,7 @@ import qualified XMonad.StackSet as W
 
 -- | The setup I like: a main, web and chat plus the rest numbered.
 pbWorkspaces :: [WorkspaceId]
-pbWorkspaces = ["1-main","2-web","3-chat"] ++ map show [4..9 :: Int]
+pbWorkspaces = ["1-main","2-web","3-work","4-remote"] ++ map show [5..9 :: Int]
 
 -- | Default plus docks, dialogs and smarter full screening.
 pbManageHook :: ManageHook

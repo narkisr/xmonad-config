@@ -26,6 +26,9 @@ import XMonad.Hooks.ManageHelpers (doCenterFloat)
 import XMonad.Hooks.UrgencyHook   (withUrgencyHookC)
 import XMonad.Layout.Maximize
 import XMonad.Util.EZConfig       (additionalKeys)
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.SetWMName
+
 
 myLayout = avoidStruts $ maximize (Tall 1 (3/100) (1/2)) ||| Full |||  pbLayout
 
@@ -33,13 +36,14 @@ main :: IO ()
 main = do
     d <- spawnDzen myLeftBar
     spawnToDzen "conky -c ~/.dzen_conkyrc" myRightBar
-    spawn "/home/ronen/.dropbox-dist/dropboxd"
+    spawn "~/.dropbox-dist/dropboxd"
     xmonad $ withUrgencyHookC pbUrgencyHook pbUrgencyConfig $ defaultConfig
         { terminal    = "gnome-terminal"
         , workspaces  = pbWorkspaces
         , layoutHook  = myLayout
         , manageHook  = pbManageHook <+> myManageHook
         , logHook     = dynamicLogWithPP $ pbPP { ppOutput = hPutStrLn d }
+        , startupHook = ewmhDesktopsStartup >> setWMName "LG3D"
        , modMask = mod4Mask     -- Rebind Mod to the Windows key
         } `additionalKeys` 
        [ ((mod4Mask .|. shiftMask, xK_z), spawn "gnome-screensaver-command --lock") --mod4mask is the windows key
@@ -60,5 +64,4 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Uzbl"      , doShift "2-web" )
                       , ("Uzbl-core" , doShift "2-web" )
                       , ("Chromium"  , doShift "2-web" )
-                      , ("irssi"     , doShift "3-chat")
                       ]

@@ -63,6 +63,7 @@ myManageHook = composeAll
     , className =? "Xfrun4"         --> doFloat
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "MPlayer"        --> doFloat
+    , className =? "Do"             --> doIgnore 
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
 
@@ -316,6 +317,7 @@ myStartupHook = return ()
 -- Run xmonad with all the defaults we set up.
 --
 main = do
+  spawn "/usr/bin/setxkbmap -option \"ctrl:nocaps\""
   xmonad $ defaults {
       manageHook = manageDocks <+> myManageHook
       , startupHook = setWMName "LG3D"

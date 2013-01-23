@@ -9,11 +9,16 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
+
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
 import XMonad.Layout.MultiColumns
+import XMonad.Layout.Accordion
+import XMonad.Layout.Dishes
+import XMonad.Layout.Mosaic
+
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import qualified XMonad.StackSet as W
@@ -25,7 +30,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal = "/usr/bin/rxvt-unicode"
+myTerminal = "/usr/bin/gnome-terminal"
 
 
 ------------------------------------------------------------------------
@@ -49,12 +54,8 @@ myWorkspaces = ["1:term","2:web","3:code","4:talk","5", "6", "7", "8", "9:GI"] -
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "Chromium-browser" --> doShift "4:talk"
-    , className =? "Google-chrome"  --> doShift "2:web"
+    [ className =? "Google-chrome"  --> doShift "2:web"
     , className =? "Firefox"        --> doShift "1:web"
-    , className =? "Sublime"        --> doShift "3:code"
-    , className =? "Empathy"        --> doShift "4:talk"
-    , className =? "Xchat"          --> doShift "9:GI"
     , className =? "Skype"          --> doShift "9:GI"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
@@ -79,7 +80,10 @@ myManageHook = composeAll
 --
 myLayout = avoidStruts (
     Tall 1 (3/100) (1/2) |||
-    tabbed shrinkText tabConfig |||
+    tabbed shrinkText tabConfig ||| 
+    Accordion |||
+    Dishes 2 (1/6)  |||
+    mosaic 2 [3,2] |||
     multiCol [1] 1 0.01 (-0.5))
 
 

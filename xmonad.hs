@@ -1,7 +1,3 @@
--- xmonad config used by Vic Fryzel
--- Author: Vic Fryzel
--- http://github.com/vicfryzel/xmonad-config
- 
 import System.IO
 import System.Exit
 import XMonad
@@ -18,6 +14,7 @@ import XMonad.Layout.MultiColumns
 import XMonad.Layout.Accordion
 import XMonad.Layout.Dishes
 import XMonad.Layout.Mosaic
+import XMonad.Config.Xfce
 
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
@@ -116,7 +113,7 @@ myBorderWidth = 1
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
--- myModMask = mod4Mask
+-- myModMask = mod1Mask
  
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ----------------------------------------------------------------------
@@ -131,11 +128,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_l),
      spawn "xscreensaver-command -lock")
 
-  -- Launch dmenu via yeganesh.
-  -- Use this to launch programs without a key binding.
-  --, ((modMask, xK_p),
-  --   spawn "exe=`dmenu_path | yeganesh` && eval \"exec $exe\"")
-
   -- Take a screenshot in select mode.
   -- After pressing this key binding, click a window, or draw a rectangle with
   -- the mouse.
@@ -147,112 +139,67 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask .|. shiftMask, xK_p),
      spawn "screenshot")
 
-  -- Mute volume.
-  , ((0, 0x1008FF12),
-     spawn "amixer -q set Front toggle")
-
-  -- Decrease volume.
-  , ((0, 0x1008FF11),
-     spawn "amixer -q set Front 10%-")
-
-  -- Increase volume.
-  , ((0, 0x1008FF13),
-     spawn "amixer -q set Front 10%+")
-
-  -- Audio previous.
-  , ((0, 0x1008FF16),
-     spawn "")
-
-  -- Play/pause.
-  , ((0, 0x1008FF14),
-     spawn "")
-
-  -- Audio next.
-  , ((0, 0x1008FF17),
-     spawn "")
-
-  -- Eject CD tray.
-  , ((0, 0x1008FF2C),
-     spawn "eject -T")
 
   --------------------------------------------------------------------
   -- "Standard" xmonad key bindings
   --
 
   -- Close focused window.
-  , ((modMask .|. shiftMask, xK_c),
-     kill)
+  , ((modMask .|. shiftMask, xK_c), kill)
 
   -- Cycle through the available layout algorithms.
-  , ((modMask, xK_space),
-     sendMessage NextLayout)
+  , ((modMask, xK_space), sendMessage NextLayout)
 
   --  Reset the layouts on the current workspace to default.
-  , ((modMask .|. shiftMask, xK_space),
-     setLayout $ XMonad.layoutHook conf)
+  , ((modMask .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
 
   -- Resize viewed windows to the correct size.
-  , ((modMask, xK_n),
-     refresh)
+  , ((modMask, xK_n), refresh)
 
   -- Move focus to the next window.
-  , ((modMask, xK_Tab),
-     windows W.focusDown)
+  , ((modMask, xK_Tab), windows W.focusDown)
 
   -- Move focus to the next window.
-  , ((modMask, xK_j),
-     windows W.focusDown)
+  , ((modMask, xK_j), windows W.focusDown)
 
   -- Move focus to the previous window.
-  , ((modMask, xK_k),
-     windows W.focusUp  )
+  , ((modMask, xK_k), windows W.focusUp  )
 
   -- Move focus to the master window.
-  , ((modMask, xK_m),
-     windows W.focusMaster  )
+  , ((modMask, xK_m), windows W.focusMaster  )
 
   -- Swap the focused window and the master window.
-  , ((modMask, xK_Return),
-     windows W.swapMaster)
+  , ((modMask, xK_Return), windows W.swapMaster)
 
   -- Swap the focused window with the next window.
-  , ((modMask .|. shiftMask, xK_j),
-     windows W.swapDown  )
+  , ((modMask .|. shiftMask, xK_j), windows W.swapDown  )
 
   -- Swap the focused window with the previous window.
-  , ((modMask .|. shiftMask, xK_k),
-     windows W.swapUp    )
+  , ((modMask .|. shiftMask, xK_k), windows W.swapUp    )
 
   -- Shrink the master area.
-  , ((modMask, xK_h),
-     sendMessage Shrink)
+  , ((modMask, xK_h), sendMessage Shrink)
 
   -- Expand the master area.
-  , ((modMask, xK_l),
-     sendMessage Expand)
+  , ((modMask, xK_l), sendMessage Expand)
 
   -- Push window back into tiling.
-  , ((modMask, xK_t),
-     withFocused $ windows . W.sink)
+  , ((modMask, xK_t), withFocused $ windows . W.sink)
 
   -- Increment the number of windows in the master area.
-  , ((modMask, xK_comma),
-     sendMessage (IncMasterN 1))
+  , ((modMask, xK_comma), sendMessage (IncMasterN 1))
 
   -- Decrement the number of windows in the master area.
-  , ((modMask, xK_period),
-     sendMessage (IncMasterN (-1)))
+  , ((modMask, xK_period), sendMessage (IncMasterN (-1)))
 
   -- Toggle the status bar gap.
   -- TODO: update this binding with avoidStruts, ((modMask, xK_b),
 
   -- Quit xmonad.
-  , ((modMask .|. shiftMask, xK_q),
-     io (exitWith ExitSuccess))
+  , ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
 
   -- Restart xmonad.
-  , ((modMask, xK_q),
-     restart "xmonad" True)
+  , ((modMask, xK_q), restart "xmonad" True)
   ]
   ++
  
@@ -321,11 +268,20 @@ myStartupHook = return ()
 -- Run xmonad with all the defaults we set up.
 --
 main = do
-  spawn "/usr/bin/setxkbmap -option \"ctrl:nocaps\""
-  xmonad $ defaults {
-      manageHook = manageDocks <+> myManageHook
-      , startupHook = setWMName "LG3D"
-  }
+   spawn "/usr/bin/setxkbmap -option \"ctrl:nocaps\""
+   xmonad xfceConfig { 
+     manageHook = manageDocks <+> myManageHook
+     , terminal   = myTerminal
+     , keys               = myKeys
+     , mouseBindings      = myMouseBindings
+     ,  startupHook = setWMName "LG3D"
+   }
+   -- xmonad $ defaults {
+   --     manageHook = manageDocks <+> myManageHook
+   --     , startupHook = setWMName "LG3D"
+   -- }
+  
+
  
 
 ------------------------------------------------------------------------

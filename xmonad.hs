@@ -269,6 +269,7 @@ myStartupHook = return ()
 --
 main = do
    spawn "/usr/bin/setxkbmap -option \"ctrl:nocaps\""
+   spawn "/opt/copy/x86_64/CopyAgent"
    xmonad xfceConfig { 
      manageHook = manageDocks <+> myManageHook
      , terminal   = myTerminal

@@ -14,6 +14,7 @@ import XMonad.Layout.MultiColumns
 import XMonad.Layout.Accordion
 import XMonad.Layout.Dishes
 import XMonad.Layout.Mosaic
+import XMonad.Layout.Grid
 import XMonad.Config.Xfce
 
 import XMonad.Util.Run(spawnPipe)
@@ -75,7 +76,7 @@ myManageHook = composeAll
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (
+myLayout = Grid ||| avoidStruts (
     Tall 1 (3/100) (1/2) |||
     tabbed shrinkText tabConfig ||| 
     Accordion |||
@@ -207,7 +208,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- mod-shift-[1..9], Move client to workspace N
   [((m .|. modMask, k), windows $ f i)
       | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
   ++
 
   -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
@@ -269,13 +270,16 @@ myStartupHook = return ()
 --
 main = do
    spawn "/usr/bin/setxkbmap -option \"ctrl:nocaps\""
-   spawn "/opt/copy/x86_64/CopyAgent"
+   -- spawn "/opt/copy/x86_64/CopyAgent"
    xmonad xfceConfig { 
      manageHook = manageDocks <+> myManageHook
      , terminal   = myTerminal
      , keys               = myKeys
      , mouseBindings      = myMouseBindings
      ,  startupHook = setWMName "LG3D"
+     , layoutHook = avoidStruts $ myLayout 
+     -- , layoutHook         = myLayout
+     -- , layoutHook         = smartBorders $ myLayout
    }
    -- xmonad $ defaults {
    --     manageHook = manageDocks <+> myManageHook

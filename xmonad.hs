@@ -53,7 +53,7 @@ myWorkspaces = ["1:term","2:web","3:code","4:talk","5", "6", "7", "8", "9:GI"] -
 --
 myManageHook = composeAll
     [ className =? "Google-chrome"  --> doShift "2:web"
-    , className =? "Firefox"        --> doShift "1:web"
+    , className =? "Firefox"        --> doShift "8"
     , className =? "Skype"          --> doShift "9:GI"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
@@ -61,7 +61,6 @@ myManageHook = composeAll
     , resource  =? "gpicview"       --> doFloat
     , className =? "Xfrun4"         --> doFloat
     , resource  =? "kdesktop"       --> doIgnore
-    , className =? "MPlayer"        --> doFloat
     , className =? "Do"             --> doIgnore 
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
@@ -270,21 +269,16 @@ myStartupHook = return ()
 --
 main = do
    spawn "/usr/bin/setxkbmap -option \"ctrl:nocaps\""
-   -- spawn "/opt/copy/x86_64/CopyAgent"
    xmonad xfceConfig { 
-     manageHook = manageDocks <+> myManageHook
+       manageHook = manageDocks <+> myManageHook
      , terminal   = myTerminal
      , keys               = myKeys
      , mouseBindings      = myMouseBindings
-     ,  startupHook = setWMName "LG3D"
+     , startupHook = setWMName "LG3D"
      , layoutHook = avoidStruts $ myLayout 
      -- , layoutHook         = myLayout
      -- , layoutHook         = smartBorders $ myLayout
    }
-   -- xmonad $ defaults {
-   --     manageHook = manageDocks <+> myManageHook
-   --     , startupHook = setWMName "LG3D"
-   -- }
   
 
  

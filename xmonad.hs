@@ -77,7 +77,7 @@ myManageHook = composeAll
 --
 myLayout = Grid ||| avoidStruts (
     Tall 1 (3/100) (1/2) |||
-    tabbed shrinkText tabConfig ||| 
+    tabbed shrinkText tabConfig |||
     Accordion |||
     Dishes 2 (1/6)  |||
     mosaic 2 [3,2] |||
@@ -165,9 +165,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Move focus to the master window.
   , ((modMask, xK_m), windows W.focusMaster  )
-
-  -- Swap the focused window and the master window.
-  , ((modMask, xK_Return), windows W.swapMaster)
 
   -- Swap the focused window with the next window.
   , ((modMask .|. shiftMask, xK_j), windows W.swapDown  )

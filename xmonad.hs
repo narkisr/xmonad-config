@@ -53,7 +53,7 @@ myWorkspaces = ["1:term","2:web","3:code","4:talk","5", "6", "7", "8", "9:GI"] -
 --
 myManageHook = composeAll
     [ className =? "Google-chrome"  --> doShift "2:web"
-    , className =? "Firefox"        --> doShift "8"
+    , className =? "Firefox"        --> doShift "2:web"
     , className =? "Skype"          --> doShift "9:GI"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
